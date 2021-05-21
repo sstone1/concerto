@@ -46,6 +46,7 @@ class Typed {
         this.$classDeclaration = classDeclaration;
         this.$namespace = ns;
         this.$type = type;
+        this.$salts = null;
     }
 
     /**
@@ -193,6 +194,43 @@ class Typed {
     toJSON() {
         throw new Error('Use Serializer.toJSON to convert resource instances to JSON objects.');
     }
+
+    /**
+     * Get a map of property name to their salt values.
+     * @returns {object} a map of property names to their salt values.
+     */
+    getSalts() {
+        return this.$salts;
+    }
+
+    /**
+     * Get the salt for the specified property.
+     * @param {string} propName the property name.
+     * @returns {Buffer} the salt.
+     */
+    getSalt(propName) {
+        if (!this.$salts) {
+            return null;
+        } else if (propName in this.$salts) {
+            return this.$salts[propName];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Set the salt for the specified property.
+     * @param {string} propName the property name.
+     * @param {Buffer} salt the salt.
+     */
+    setSalt(propName, salt) {
+        if (!this.$salts) {
+            this.$salts = { [propName]: salt };
+        } else {
+            this.$salts[propName] = salt;
+        }
+    }
+
 }
 
 module.exports = Typed;
