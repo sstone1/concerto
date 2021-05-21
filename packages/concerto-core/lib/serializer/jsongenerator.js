@@ -121,6 +121,18 @@ class JSONGenerator {
             }
         }
 
+        // If there are any salts associated with the instance,
+        // serialize them to hex strings and store them in the
+        // serialized object.
+        const salts = obj.getSalts();
+        if (salts) {
+            const encodedSalts = {};
+            for (const [key, value] of Object.entries(salts)) {
+                encodedSalts[key] = value.toString('hex');
+            }
+            result.$salts = encodedSalts;
+        }
+
         if (this.ergo) {
             const theClass = result.$class;
             delete result.$class;

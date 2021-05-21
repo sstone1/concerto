@@ -145,6 +145,15 @@ class JSONPopulator {
             }
         });
 
+        // If there are any salts, parse them into buffers and
+        // store them in the result.
+        const encodedSalts = jsonObj.$salts;
+        if (encodedSalts) {
+            for (const [key, value] of Object.entries(encodedSalts)) {
+                resourceObj.setSalt(key, Buffer.from(value, 'hex'));
+            }
+        }
+
         return resourceObj;
     }
 
