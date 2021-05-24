@@ -419,4 +419,19 @@ declare module '@accordproject/concerto-core' {
     getQueue(): any[];
     runJob(job: any): void;
   }
+
+  type Path = string[];
+
+  type Proof = {
+    hashes: string[][2],
+    value: any;
+    salt: string
+  }
+  export class Merkle {
+    constructor(modelManager: ModelManager);
+    salt(typed: Typed): void;
+    root(typed: Typed): string;
+    proof(typed: Typed, path: Path): Proof;
+    verify(ns: string, type: string, path: Path, proof: Proof): boolean;
+  }
 }

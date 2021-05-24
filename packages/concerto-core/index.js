@@ -54,3 +54,4 @@ module.exports.TypedStack = require('./lib/serializer/typedstack');
 module.exports.ModelUtil = require('./lib/modelutil');
 module.exports.version = require('./package.json');
 module.exports.Concerto = require('./lib/concerto');
+module.exports.Merkle = require('./lib/merkle');
