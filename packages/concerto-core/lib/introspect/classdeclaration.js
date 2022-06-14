@@ -485,14 +485,16 @@ class ClassDeclaration extends Decorated {
         const subclassMap = new Map();
 
         // Build map of all direct subclasses relationships
-        allClassDeclarations.forEach((declaration) => {
-            const superType = declaration.getSuperType();
-            if (superType) {
-                const subclasses = subclassMap.get(superType) || new Set();
-                subclasses.add(declaration);
-                subclassMap.set(superType, subclasses);
-            }
-        });
+        allClassDeclarations
+            .filter(declaration => !declaration.isEnum())
+            .forEach((declaration) => {
+                const superType = declaration.getSuperType();
+                if (superType) {
+                    const subclasses = subclassMap.get(superType) || new Set();
+                    subclasses.add(declaration);
+                    subclassMap.set(superType, subclasses);
+                }
+            });
 
         const superType = this.getFullyQualifiedName();
         const subclasses = subclassMap.get(superType);

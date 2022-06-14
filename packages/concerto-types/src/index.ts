@@ -14,3 +14,5 @@
 
 export * from './generated/concerto';
 export * from './generated/concerto.metamodel';
+export * from './generated/org.accordproject.decoratorcommands';
+

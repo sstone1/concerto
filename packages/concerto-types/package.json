@@ -33,6 +33,7 @@
     "license": "Apache-2.0",
     "devDependencies": {
         "@accordproject/concerto-core": "2.3.0",
+        "@accordproject/concerto-cto": "2.3.0",
         "@accordproject/concerto-metamodel": "2.3.0",
         "@accordproject/concerto-tools": "2.3.0",
         "@accordproject/concerto-util": "2.3.0",
