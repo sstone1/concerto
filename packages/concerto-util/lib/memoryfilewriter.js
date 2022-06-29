@@ -31,7 +31,7 @@ const BaseFileWriter = require('./basefilewriter');
  * @class
  * @memberof module:concerto-core
  */
-class FileWriter extends BaseFileWriter {
+class MemoryFileWriter extends BaseFileWriter {
 
     /**
      * Create a FileWriter.
@@ -41,10 +41,7 @@ class FileWriter extends BaseFileWriter {
      */
     constructor(outputDirectory) {
         super();
-        this.outputDirectory = outputDirectory;
-        this.relativeDir = null;
-        this.fileName = null;
-        mkdirp.sync(outputDirectory);
+        this.files = new Map();
     }
 
     /**
@@ -110,14 +107,22 @@ class FileWriter extends BaseFileWriter {
         }
         filePath = path.resolve(filePath, this.fileName);
 
-        //console.log('Writing to ' + filePath );
-        mkdirp.sync(path.dirname(filePath));
-        fs.writeFileSync(filePath, this.getBuffer());
+        this.files.set(filePath, this.getBuffer());
 
         this.fileName = null;
         this.relativeDir = null;
         this.clearBuffer();
     }
+
+    getFiles() {
+        return this.files;
+    }
 }
 
-module.exports = FileWriter;
+module.exports = MemoryFileWriter;
+
+const writer = new MemoryFileWriter();
+// write the things
+const files = writer.getFiles();
+// concerto.cto => "namespace concerto asset Thing ..."
+// com.example.a.cto => "namespace com.example.a asset Thing ..."

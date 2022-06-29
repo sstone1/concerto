@@ -31,7 +31,7 @@ const BaseFileWriter = require('./basefilewriter');
  * @class
  * @memberof module:concerto-core
  */
-class FileWriter extends BaseFileWriter {
+class ZipFileWriter extends BaseFileWriter {
 
     /**
      * Create a FileWriter.
@@ -41,10 +41,7 @@ class FileWriter extends BaseFileWriter {
      */
     constructor(outputDirectory) {
         super();
-        this.outputDirectory = outputDirectory;
-        this.relativeDir = null;
-        this.fileName = null;
-        mkdirp.sync(outputDirectory);
+        this.zip = new Jszip();
     }
 
     /**
@@ -110,14 +107,22 @@ class FileWriter extends BaseFileWriter {
         }
         filePath = path.resolve(filePath, this.fileName);
 
-        //console.log('Writing to ' + filePath );
-        mkdirp.sync(path.dirname(filePath));
-        fs.writeFileSync(filePath, this.getBuffer());
+        this.zip.file(filePath, this.getBuffer());
 
         this.fileName = null;
         this.relativeDir = null;
         this.clearBuffer();
     }
+
+    getZip() {
+        return this.zip.getMeTheBuffer();
+    }
 }
 
-module.exports = FileWriter;
+module.exports = ZipFileWriter;
+
+const writer = new ZipFileWriter();
+// write the things
+const zip = writer.getZip();
+// concerto.cto => "namespace concerto asset Thing ..."
+// com.example.a.cto => "namespace com.example.a asset Thing ..."
